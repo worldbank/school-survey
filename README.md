@@ -71,7 +71,7 @@ of the data:
 * Note: Replicated numbers in the output will not match 
 
 Contributors:
-Akito Kamei (UNICEF, Office of Research), Joao Pedro Wagner De Azevedo (WB), António Carvalho (OECD), Yifan Li (UNESCO Institute for Statistics), Youngkwang Jeon (UNICEF, Office of Research)
+Akito Kamei (UNICEF, Office of Research), Joao Pedro Wagner De Azevedo (WB), António Carvalho (OECD), Yifan Li (UNESCO Institute for Statistics), Yi Ning Wong (WB), Youngkwang Jeon (UNICEF, Office of Research)
 
 ## Reference for round 1 and 2
 
