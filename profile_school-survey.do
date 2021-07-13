@@ -1,17 +1,16 @@
 *==============================================================================*
-*! UNESCO-UNICEF-WBG Survey on National education responses to COVID-19
-*! Project information at: https://github.com/worldbank/schoolsurvey
+*! UNESCO-UNICEF-WBG_OECD Survey on National education responses to COVID-19 - Round 3
+*! Project information at: https://github.com/worldbank/school-survey
 *
 *! MASTER RUN: Executes all tasks sequentially
 *==============================================================================*
 
-
 * Steps in this do-file:
+
 * 1) General program setup
 * 2) Define user-dependant paths for local clone and subfolders as globals
 * 3) Download and install required user written ado's
 * 4) Run all tasks in this project
-
 
 *-----------------------------------------------------------------------------
 * 1) General program setup
@@ -34,7 +33,7 @@ version             14
 * Change here only if this repo is renamed
 local this_repo     "school-survey"
 * Change here only if this master run do-file is renamed
-local this_run_do   "run.do"
+local this_run_do   "profile_school-survey.do"
 
 * One of two options can be used to "know" the clone path for a given user
 * A. the user had previously saved their GitHub location with -whereis-,
@@ -84,19 +83,18 @@ if _rc != 0 {
   noi disp as error _n `"{phang}Having issues accessing your local clone of the `this_repo' repo. Please double check the clone location specified in the run do-file and try again.{p_end}"'
   error 2222
 }
-
 * Flag that profile was successfully loaded
 *--------------------------------------------
 noi disp as result _n `"{phang}`this_repo' clone sucessfully set up (${clone}).{p_end}"'
 
 * Set subfolders of clone as globals
-*--------------------------------------------
+*----------------------------------------------------
+global Data     	   "${clone}/01_data/"
 global Data_raw     "${clone}/01_data/011_rawdata/"
-global Data_clean   "${clone}/01_data/"
+global Data_clean   "${clone}/01_data/012_cleandata/"
 global Do           "${clone}/02_programs/"
-global Figure       "${clone}/03_outputs/031_figures/"
-global Table        "${clone}/03_outputs/032_tables/"
-*-----------------------------------------------------------------------------
+global Table        "${clone}/03_outputs/"
+*----------------------------------------------------
 
 
 *-----------------------------------------------------------------------------
@@ -104,28 +102,55 @@ global Table        "${clone}/03_outputs/032_tables/"
 *-----------------------------------------------------------------------------
 * Fill this list will all user-written commands this project requires
 * that can be installed automatically from ssc
-local user_commands wbopendata estout tabout
+local user_commands wbopendata estout tabout mrtab labvars tidy
 
 * Loop over all the commands to test if they are already installed, if not, then install
 foreach command of local user_commands {
   cap which `command'
-  if _rc == 111 ssc install `command'
+  if _rc == 111 ssc install `command' 
 }
-*-----------------------------------------------------------------------------
-
-
+cap which renvars
+if _rc == 111 net install http://www.stata-journal.com/software/sj5-4/dm88_1
+  
+  
 *-----------------------------------------------------------------------------
 * 4) Run all tasks in this project
 *-----------------------------------------------------------------------------
-* TASK 01: download or import frozen cty metadata & population from WBG API
-do "${Do}/01_download_wbg_api_data.do"
+* Steps in Round 3 Cleaning: 
 
-* TASK 02: import and clean survey rawdata
-do "${Do}/02_clean_surveydata.do"
+* 0211: Convert raw excel (UIS) to trackable .csv and .dta format 
+* 0212: Convert raw excel (OECD) to trackable .csv and .dta format 
+* 0213: Convert country metadata to trackable .csv and .dta format
+* 0214: Convert Wave 1 and Wave 2 data to trackable .csv and .dta format
 
-* TASK 03: combine rounds 1 and 2 survey data
-do "${Do}/03_combine_round1_round2.do"
+* 0221: Clean the converted .dta for UIS
+* 0222: Clean the converted .dta for OECD
+
+* 023: Append UIS and OECD and merge complementary files + clean metadata if needed
+
+* 024: Export figures to excel
+
+* 025: Export stats to excel
+
+**** Note that 0221, 0222, 0224, and 0225 are organized by sections of the questionnaire
+*-----------------------------------------------------------------------------
+
+* TASK 01: download or import frozen cty metadata & population from WBG API 
+do "${Do}021_1_import_uis.do"
+do "${Do}021_2_import_oecd.do"
+do "${Do}021_3_import_metadata.do"
+
+* TASK 02: clean survey rawdata
+do "${Do}022_1_clean_uis.do"
+do "${Do}022_2_clean_oecd.do"
+do "${Do}022_3_consistency.do"
+
+* TASK 03: Append OECD and UNESCO data
+do "${Do}023_append_all.do"
 
 * TASK 04: creates excel with all tables needed for figures
-do "${Do}/04_tables_and_figures.do"
+do "${Do}024_analysis_figures.do"
+
+* TASK 05: Adds to excel for other statistics used in the report.
+do "${Do}025_analysis_stats.do"
 *-----------------------------------------------------------------------------
