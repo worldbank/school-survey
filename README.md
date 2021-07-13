@@ -1,4 +1,4 @@
-﻿# Survey on National Education Responses to COVID-19 School Closures
+# Survey on National Education Responses to COVID-19 School Closures
 
 This repository hosts the **UNESCO-UNICEF-WBG-OECD Survey on National education responses to COVID-19, Round 3**. It contains the raw data collected from the survey and the programs used to clean and analyze responses.
 
@@ -71,7 +71,7 @@ of the data:
 * Note: Replicated numbers in the output will not match 
 
 Contributors:
-Akito Kamei (UNICEF, Office of Research), Alison Gilberto (WB), António Carvalho (OECD), Joao Pedro Wagner De Azevedo (WB), Sakshi Mishra (UNICEF Headquarters), Yifan Li (UNESCO Institute for Statistics), Yi Ning Wong (WB), Youngkwang Jeon (UNICEF, Office of Research)
+Akito Kamei (UNICEF, Office of Research), Alison Gilberto (WB), António Carvalho (OECD), Joao Pedro Wagner De Azevedo (WB), Radhika Nagesh (UNICEF, Office of Research), Sakshi Mishra (UNICEF Headquarters), Yifan Li (UNESCO Institute for Statistics), Yi Ning Wong (WB), Youngkwang Jeon (UNICEF, Office of Research)
 
 ## Reference for round 1 and 2
 
