@@ -37,8 +37,8 @@ replace q_consent = "YES" if q_consent ==""
 * 1) UIS Data: Export to .csv
 *---------------------------------------------------------------------------
 
-// export delimited using "${Data_raw}/jsw3_uis.csv", replace
-// export excel using "${Data_raw}/jsw3_uis.xlsx", firstrow(variables) replace
+export delimited using "${Data_raw}/jsw3_uis.csv", replace
+export excel using "${Data_raw}/jsw3_uis.xlsx", firstrow(variables) replace
 
 *---------------------------------------------------------------------------
 * 2) UIS Data :Export to .dta

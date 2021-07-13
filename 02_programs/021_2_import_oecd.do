@@ -47,8 +47,8 @@ spread Q A
 * 1) OECD Data: Export to .csv
 *---------------------------------------------------------------------------
 
-	export excel "${Data_raw}jsw3_oecd.xlsx", firstrow(variables) replace
-	export delimited using "${Data_raw}jsw3_oecd.csv", replace
+export excel "${Data_raw}jsw3_oecd.xlsx", firstrow(variables) replace
+export delimited using "${Data_raw}jsw3_oecd.csv", replace
   
 *---------------------------------------------------------------------------
 * 2) OECD Data: Export to .dta
