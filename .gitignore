@@ -76,6 +76,7 @@
 
 # Keep the template excel for tables and figures
 !/*_outputs/*_tables/TEMPLATE.xlsx
+!/*_outputs/TEMPLATE.xlsx
 
 #######################
 # Include all the files with passwords or tokens here. All files named
