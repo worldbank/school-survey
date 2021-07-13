@@ -1,19 +1,26 @@
-********************************************************************************
+*=========================================================================*
+* Project information at: https://github.com/worldbank/schoolsurvey-production
 ****** Country: Worldwide
-****** Purpose: Download data from the WBG API or import frozen csv
-****** Created by: Diana Goldemberg (dgoldemberg1@worldbank.org), 2020/09/24
-****** Input  data : download from API if frozen csvs are not found
-******               or import csvs directly (wbg_country_metadata; population)
-****** Output data : wbg_country_metadata.dta, population.dta
+****** Purpose: Cleaning of the UNESCO-UNICEF-WBG_OECD Survey on National education responses to COVID-19 - Round 3
+****** Created by: UNESCO, UNICEF, WORLD BANK, and OECD
+****** Used by: UNESCO, UNICEF, WORLD BANK, and OECD
+****** Input  data : wbopendata            
+****** Output data : wbg_country_metadata.dta, wbg_unicef_country_metadata.csv, population.csv, population.dta, enrollment.csv, enrollment.dta
 ****** Language: English
-********************************************************************************
+*=========================================================================*
 
+* In this do file: 
+* This .do file reads country-level metadata through the wbopendata command, and converts them to .dta and .csv format to track changes on Github while cleaning. 
+* Countries are categorized by World Bank classifications and include countryname, region, region name, income level, incomelevelname, lendingtype, lending type name, total population, school age population, and enrollment. 
+* Exceptions are made to entities that are not a part of the WBG list of economies. 
+* These characteristics will later be merged into the survey data.
+* This step runs parallel to 021_1_import_uis.do, and 021_2_import_oecd.do.
+* Note: This file only needs to be run on first use.
 
-* In this do-file:
-* Step 1 - Get WBG country metadata
-* Step 2 - Get school-age population by country
-* Step 3 - Get enrollment by country
-
+** Steps in this do-file:
+* 1) Get WBG country metadata 
+* 2) Get school-age population by country
+* 3) Get enrollment by country
 
 *-----------------------------------------------------------------------------
 * This switch allows to "freeze" the data downloaded from the API as a csv,
@@ -23,9 +30,8 @@
 local overwrite_wbopendata = 0
 *-----------------------------------------------------------------------------
 
-
 *-----------------------------------------------------------------------------
-* Step 1 - Get WBG country metadata
+* 1) Get WBG country metadata
 *-----------------------------------------------------------------------------
 
 * Check for a pre-existing frozen version in the clone
@@ -114,12 +120,15 @@ rename (region regionname) (region_wbg regionname_wbg)
 compress
 sort countrycode
 isid countrycode
-save "${Data_clean}/wbg_country_metadata.dta", replace
+save "${Data_raw}/wbg_country_metadata.dta", replace
+
+export delimited using "${Data_raw}/wbg_unicef_country_metadata.csv", replace
+
 *-----------------------------------------------------------------------------
 
 
 *-----------------------------------------------------------------------------
-* Step 2 - Get school-age population by country
+* 2) Get school-age population by country
 *-----------------------------------------------------------------------------
 * Check for a pre-existing frozen version in the clone
 cap confirm file "${Data_raw}/population.csv"
@@ -166,12 +175,12 @@ label var population_0417  "Population ages 04-17"
 
 compress
 isid countrycode
-save "${Data_clean}/population.dta", replace
+save "${Data_raw}/population.dta", replace
 *-----------------------------------------------------------------------------
 
 
 *-----------------------------------------------------------------------------
-* Step 3 - Get enrollment by country
+* 3) Get enrollment by country
 *-----------------------------------------------------------------------------
 * Check for a pre-existing frozen version in the clone
 cap confirm file "${Data_raw}/enrollment.csv"
@@ -212,5 +221,6 @@ label var enrollment       "Enrollment in pre-primary, primary and secondary edu
 
 compress
 isid countrycode
-save "${Data_clean}/enrollment.dta", replace
+save "${Data_raw}/enrollment.dta", replace
+
 *-----------------------------------------------------------------------------
